@@ -5,7 +5,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
 
 export default function GoodAdsLandingPage() {
   const [formData, setFormData] = useState({});
-  const [activeTab, setActiveTab] = useState("advertisers");
+  const [activeTab, setActiveTab] = useState("businesses");
+  const [waitlistTab, setWaitlistTab] = useState("advertisers");
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
@@ -45,27 +46,38 @@ export default function GoodAdsLandingPage() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center">
             {/* Badge */}
-            <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 text-blue-800 text-sm font-medium mb-8">
+            {/* <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 text-blue-800 text-sm font-medium mb-8">
               <span className="w-2 h-2 bg-blue-600 rounded-full mr-2 animate-pulse"></span>
               Revolutionizing Digital Advertising
-            </div>
+            </div> */}
+            
+            {/* Tagline */}
+            <p className="text-lg md:text-xl text-gray-500 mb-4 font-light italic">
+              I know this might sound weird. Scary also perhaps. But imagine
+            </p>
             
             {/* Main Headline */}
-            <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6 leading-tight">
-              Ads People Actually{" "}
-              <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 bg-clip-text text-transparent">
-                Choose to Watch
+            <h1 className="text-6xl md:text-8xl font-black text-gray-900 mb-6 leading-tight tracking-tight">
+              <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 bg-clip-text text-transparent">
+                Good Ads
               </span>
             </h1>
             
             {/* Subheadline */}
-            <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
-              Ethical, insight-driven advertising that puts users first. 
-              <span className="font-semibold text-gray-900"> A better ad experience—for everyone.</span>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-8 leading-tight">
+              Ads. But Good. For Everyone.
+            </h2>
+            
+            {/* Description */}
+            <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-4xl mx-auto leading-relaxed">
+              Ethical advertising that puts users first. Intent-driven impressions and valuable data collection to supercharge business decisions. A simple plugin for websites to start generating revenue.{" "}
+              <span className="font-bold text-gray-900 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                A better ad experience - for everyone.
+              </span>
             </p>
             
             {/* Social Proof */}
-            <div className="flex items-center justify-center space-x-8 mb-10 text-sm text-gray-500">
+            {/* <div className="flex items-center justify-center space-x-8 mb-10 text-sm text-gray-500">
               <div className="flex items-center">
                 <div className="flex -space-x-2 mr-3">
                   {[1,2,3,4].map((i) => (
@@ -78,7 +90,7 @@ export default function GoodAdsLandingPage() {
                 <span className="text-green-600 font-semibold mr-1">✓</span>
                 <span>GDPR Compliant</span>
               </div>
-            </div>
+            </div> */}
             
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -102,21 +114,272 @@ export default function GoodAdsLandingPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="text-center">
               <div className="text-4xl font-bold text-blue-600 mb-2">95%</div>
-              <div className="text-gray-600">User Engagement Rate</div>
+              <div className="text-gray-600">Of my friends support this (one didnt understand)</div>
             </div>
             <div className="text-center">
               <div className="text-4xl font-bold text-purple-600 mb-2">3x</div>
-              <div className="text-gray-600">Higher Conversion</div>
+              <div className="text-gray-600">Higher Conversion (possible)</div>
             </div>
             <div className="text-center">
               <div className="text-4xl font-bold text-green-600 mb-2">100%</div>
-              <div className="text-gray-600">Privacy Compliant</div>
+              <div className="text-gray-600">Privacy Compliant (true)</div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* How It Works */}
+      {/* Why We're Good For You Section */}
+      <section className="py-20 bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 relative overflow-hidden mx-4 sm:mx-6 lg:mx-8 my-20 rounded-3xl">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-10 left-10 w-32 h-32 bg-white rounded-full blur-3xl"></div>
+          <div className="absolute bottom-10 right-10 w-40 h-40 bg-blue-400 rounded-full blur-3xl"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-60 h-60 bg-purple-400 rounded-full blur-3xl"></div>
+        </div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
+              Imagine an ad provider for websites that's also a microdata aggregation platform. Here's why we're good for you:
+            </h2>
+            {/* <p className="text-lg text-purple-200 italic">
+              (this is going to be lengthy. we really are that good!)
+            </p> */}
+          </div>
+          
+          {/* Interactive Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+            <button 
+              onClick={() => setActiveTab('businesses')}
+              className={`px-8 py-4 rounded-2xl font-bold text-lg transition-all duration-300 transform hover:scale-105 ${
+                activeTab === 'businesses' 
+                  ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900 shadow-2xl' 
+                  : 'bg-white/10 text-white border-2 border-white/30 hover:bg-white/20 backdrop-blur-sm'
+              }`}
+            >
+              <div className="flex items-center justify-center space-x-2">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
+                <span>For Businesses</span>
+              </div>
+            </button>
+            
+            <button 
+              onClick={() => setActiveTab('websites')}
+              className={`px-8 py-4 rounded-2xl font-bold text-lg transition-all duration-300 transform hover:scale-105 ${
+                activeTab === 'websites' 
+                  ? 'bg-gradient-to-r from-green-400 to-teal-500 text-gray-900 shadow-2xl' 
+                  : 'bg-white/10 text-white border-2 border-white/30 hover:bg-white/20 backdrop-blur-sm'
+              }`}
+            >
+              <div className="flex items-center justify-center space-x-2">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9m0 9c-5 0-9-4-9-9s4-9 9-9" />
+                </svg>
+                <span>For Websites</span>
+              </div>
+            </button>
+            
+            <button 
+              onClick={() => setActiveTab('users')}
+              className={`px-8 py-4 rounded-2xl font-bold text-lg transition-all duration-300 transform hover:scale-105 ${
+                activeTab === 'users' 
+                  ? 'bg-gradient-to-r from-pink-400 to-rose-500 text-gray-900 shadow-2xl' 
+                  : 'bg-white/10 text-white border-2 border-white/30 hover:bg-white/20 backdrop-blur-sm'
+              }`}
+            >
+              <div className="flex items-center justify-center space-x-2">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+                <span>For Users</span>
+              </div>
+            </button>
+          </div>
+          
+          {/* Content Display */}
+          <div className="max-w-4xl mx-auto">
+            {activeTab === 'businesses' && (
+              <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 border border-white/20 animate-fade-in">
+                <div className="text-center mb-8">
+                  <div className="w-20 h-20 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg className="w-10 h-10 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                    </svg>
+                  </div>
+                  <h3 className="text-3xl font-bold text-white mb-4">Supercharge Your Business Decisions</h3>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-4">
+                    <div className="flex items-start space-x-3">
+                      <div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                        <span className="text-gray-900 font-bold text-sm">1</span>
+                      </div>
+                      <div>
+                        <h4 className="text-white font-semibold text-lg">Intent-Driven Insights</h4>
+                        <p className="text-purple-200">Users actively choose your ads, giving you genuine interest signals instead of random impressions.</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-start space-x-3">
+                      <div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                        <span className="text-gray-900 font-bold text-sm">2</span>
+                      </div>
+                      <div>
+                        <h4 className="text-white font-semibold text-lg">Pay for Value, Not Views</h4>
+                        <p className="text-purple-200">Only pay when users engage with your content, not for wasted impressions on disinterested audiences.</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <div className="flex items-start space-x-3">
+                      <div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                        <span className="text-gray-900 font-bold text-sm">3</span>
+                      </div>
+                      <div>
+                        <h4 className="text-white font-semibold text-lg">Rich Behavioral Data</h4>
+                        <p className="text-purple-200">Get detailed insights into user preferences, interests, and decision-making patterns.</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-start space-x-3">
+                      <div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                        <span className="text-gray-900 font-bold text-sm">4</span>
+                      </div>
+                      <div>
+                        <h4 className="text-white font-semibold text-lg">Ethical & Transparent</h4>
+                        <p className="text-purple-200">Build trust with consumers through transparent, consent-based advertising practices.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            {activeTab === 'websites' && (
+              <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 border border-white/20 animate-fade-in">
+                <div className="text-center mb-8">
+                  <div className="w-20 h-20 bg-gradient-to-r from-green-400 to-teal-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg className="w-10 h-10 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+                    </svg>
+                  </div>
+                  <h3 className="text-3xl font-bold text-white mb-4">Monetize Without Compromise</h3>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-4">
+                    <div className="flex items-start space-x-3">
+                      <div className="w-8 h-8 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                        <span className="text-gray-900 font-bold text-sm">1</span>
+                      </div>
+                      <div>
+                        <h4 className="text-white font-semibold text-lg">No Traffic Requirements</h4>
+                        <p className="text-purple-200">Start earning regardless of your current traffic levels. Every user interaction counts.</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-start space-x-3">
+                      <div className="w-8 h-8 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                        <span className="text-gray-900 font-bold text-sm">2</span>
+                      </div>
+                      <div>
+                        <h4 className="text-white font-semibold text-lg">Simple Integration</h4>
+                        <p className="text-purple-200">One plugin, one setup. No complex configurations or technical expertise required.</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <div className="flex items-start space-x-3">
+                      <div className="w-8 h-8 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                        <span className="text-gray-900 font-bold text-sm">3</span>
+                      </div>
+                      <div>
+                        <h4 className="text-white font-semibold text-lg">Enhanced User Experience</h4>
+                        <p className="text-purple-200">Users actually appreciate your ads because they choose what they want to see.</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-start space-x-3">
+                      <div className="w-8 h-8 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                        <span className="text-gray-900 font-bold text-sm">4</span>
+                      </div>
+                      <div>
+                        <h4 className="text-white font-semibold text-lg">Higher Revenue Potential</h4>
+                        <p className="text-purple-200">Intent-driven ads convert better, meaning higher earnings per interaction.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            {activeTab === 'users' && (
+              <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 border border-white/20 animate-fade-in">
+                <div className="text-center mb-8">
+                  <div className="w-20 h-20 bg-gradient-to-r from-pink-400 to-rose-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg className="w-10 h-10 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-3xl font-bold text-white mb-4">Take Control of Your Experience</h3>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-4">
+                    <div className="flex items-start space-x-3">
+                      <div className="w-8 h-8 bg-pink-400 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                        <span className="text-gray-900 font-bold text-sm">1</span>
+                      </div>
+                      <div>
+                        <h4 className="text-white font-semibold text-lg">Choose Your Ads</h4>
+                        <p className="text-purple-200">Pick from relevant ads that actually interest you, not random banners that clutter your experience.</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-start space-x-3">
+                      <div className="w-8 h-8 bg-pink-400 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                        <span className="text-gray-900 font-bold text-sm">2</span>
+                      </div>
+                      <div>
+                        <h4 className="text-white font-semibold text-lg">One-Time Per Session</h4>
+                        <p className="text-purple-200">See one ad of your choice per browsing session, then enjoy an ad-free experience.</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <div className="flex items-start space-x-3">
+                      <div className="w-8 h-8 bg-pink-400 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                        <span className="text-gray-900 font-bold text-sm">3</span>
+                      </div>
+                      <div>
+                        <h4 className="text-white font-semibold text-lg">No Tracking</h4>
+                        <p className="text-purple-200">Your privacy is protected. No cookies, no tracking, no creepy following across the web.</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-start space-x-3">
+                      <div className="w-8 h-8 bg-pink-400 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                        <span className="text-gray-900 font-bold text-sm">4</span>
+                      </div>
+                      <div>
+                        <h4 className="text-white font-semibold text-lg">Support Your Favorite Sites</h4>
+                        <p className="text-purple-200">Help websites you love stay free while only seeing content that's actually useful to you.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
       <section id="how-it-works" className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
@@ -254,7 +517,7 @@ export default function GoodAdsLandingPage() {
           <div className="max-w-2xl mx-auto">
             <Card className="border-0 shadow-xl">
               <CardContent className="p-8">
-                <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                <Tabs value={waitlistTab} onValueChange={setWaitlistTab} className="w-full">
                   <TabsList className="grid w-full grid-cols-2 mb-8">
                     <TabsTrigger value="advertisers" className="text-sm font-medium">
                       For Advertisers
