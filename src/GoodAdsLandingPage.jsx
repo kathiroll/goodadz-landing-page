@@ -108,25 +108,6 @@ export default function GoodAdsLandingPage() {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-16 bg-white border-y border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="text-4xl font-bold text-blue-600 mb-2">95%</div>
-              <div className="text-gray-600">Of my friends support this (one didnt understand)</div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-purple-600 mb-2">3x</div>
-              <div className="text-gray-600">Higher Conversion (possible)</div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-green-600 mb-2">100%</div>
-              <div className="text-gray-600">Privacy Compliant (true)</div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Why We're Good For You Section */}
       <section className="py-20 bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 relative overflow-hidden mx-4 sm:mx-6 lg:mx-8 my-20 rounded-3xl">
@@ -142,9 +123,9 @@ export default function GoodAdsLandingPage() {
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
               Imagine an ad provider for websites that's also a microdata aggregation platform. Here's why we're good for you:
             </h2>
-            {/* <p className="text-lg text-purple-200 italic">
-              (this is going to be lengthy. we really are that good!)
-            </p> */}
+            <p className="text-lg text-purple-200 italic">
+              (this is going to be lengthy. we really are that good)
+            </p>
           </div>
           
           {/* Interactive Buttons */}
@@ -208,57 +189,109 @@ export default function GoodAdsLandingPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                     </svg>
                   </div>
-                  <h3 className="text-3xl font-bold text-white mb-4">Supercharge Your Business Decisions</h3>
+                  <h3 className="text-3xl font-bold text-white mb-4">The Problem with Ads Today</h3>
+                </div>
+                
+                <div className="space-y-6 mb-8">
+                  <div className="flex items-start space-x-3">
+                    <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h4 className="text-white font-semibold text-lg">Banner Blindness</h4>
+                      <p className="text-purple-200">Research shows that users completely ignore anything that even looks like an ad, even if it contains relevant information. <a href="https://journals.sagepub.com/doi/abs/10.1177/154193129804200504" className="text-yellow-400 hover:text-yellow-300 underline">Source</a></p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start space-x-3">
+                    <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h4 className="text-white font-semibold text-lg">The Skip & Ignore Cycle</h4>
+                      <p className="text-purple-200">Every time a user skips an ad, they reinforce the behavior and wire themselves to skip the next ad even more. On the other hand, during unskippable ads, users engage in other activities like checking their phones/switching tabs etc. <a href="https://www.researchgate.net/publication/361052044_I_hate_ads_but_not_the_advertised_brands_A_qualitative_study_on_Internet_users'_lived_experiences_with_YouTube_ads" className="text-yellow-400 hover:text-yellow-300 underline">Source</a></p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start space-x-3">
+                    <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h4 className="text-white font-semibold text-lg">The User Survey Gap</h4>
+                      <p className="text-purple-200">The success of a company rests on understanding their consumer. Feedback from users is paramount to understanding user needs, yet no easy and effective option exists today to gather this crucial information.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-gradient-to-r from-yellow-400/20 to-orange-500/20 rounded-2xl p-6 mb-8 border border-yellow-400/30">
+                  <h3 className="text-2xl font-bold text-white mb-4 text-center">Here's How We're Reshaping Ads</h3>
+                  <p className="text-purple-200 text-center text-lg leading-relaxed">
+                    Instead of a traditional ad, imagine if users were made to choose their ad and answer up to 3 questions for every ad. So, all your business needs - whether it's idea validation, deciding pricing, A/B testing, or even just gathering feedback for your ad campaigns - all of them can get answered by the only people AI cannot replace: <span className="text-yellow-400 font-semibold">actual people</span>.
+                  </p>
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-4">
                     <div className="flex items-start space-x-3">
-                      <div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                        <span className="text-gray-900 font-bold text-sm">1</span>
+                      <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
                       </div>
                       <div>
-                        <h4 className="text-white font-semibold text-lg">Intent-Driven Insights</h4>
-                        <p className="text-purple-200">Users actively choose your ads, giving you genuine interest signals instead of random impressions.</p>
+                        <h4 className="text-white font-semibold text-lg">Ethical & Compliant</h4>
+                        <p className="text-purple-200">Fully compliant with all GDPR/CCPA principles, ensuring your advertising practices meet the highest ethical standards.</p>
                       </div>
                     </div>
                     
                     <div className="flex items-start space-x-3">
-                      <div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                        <span className="text-gray-900 font-bold text-sm">2</span>
+                      <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
                       </div>
                       <div>
-                        <h4 className="text-white font-semibold text-lg">Pay for Value, Not Views</h4>
-                        <p className="text-purple-200">Only pay when users engage with your content, not for wasted impressions on disinterested audiences.</p>
+                        <h4 className="text-white font-semibold text-lg">Reach Your Ideal Target Audience</h4>
+                        <p className="text-purple-200">Instead of shelling out money relying on other companies' analysis of what your ideal customer should be, let the users who are actually interested in your product come to you.</p>
                       </div>
                     </div>
                   </div>
                   
                   <div className="space-y-4">
                     <div className="flex items-start space-x-3">
-                      <div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                        <span className="text-gray-900 font-bold text-sm">3</span>
+                      <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
                       </div>
                       <div>
-                        <h4 className="text-white font-semibold text-lg">Rich Behavioral Data</h4>
-                        <p className="text-purple-200">Get detailed insights into user preferences, interests, and decision-making patterns.</p>
+                        <h4 className="text-white font-semibold text-lg">Authentic Feedback</h4>
+                        <p className="text-purple-200">Get data from real people who clicked on your ad because they were genuinely interested in what you offer.</p>
                       </div>
                     </div>
                     
                     <div className="flex items-start space-x-3">
-                      <div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                        <span className="text-gray-900 font-bold text-sm">4</span>
+                      <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
                       </div>
                       <div>
-                        <h4 className="text-white font-semibold text-lg">Ethical & Transparent</h4>
-                        <p className="text-purple-200">Build trust with consumers through transparent, consent-based advertising practices.</p>
+                        <h4 className="text-white font-semibold text-lg">Pay for Data, Not Views</h4>
+                        <p className="text-purple-200">Get the most meaningful impressions you can get for free. Pay for the valuable data collected, not wasted impressions.</p>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             )}
-            
             {activeTab === 'websites' && (
               <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 border border-white/20 animate-fade-in">
                 <div className="text-center mb-8">
@@ -277,8 +310,8 @@ export default function GoodAdsLandingPage() {
                         <span className="text-gray-900 font-bold text-sm">1</span>
                       </div>
                       <div>
-                        <h4 className="text-white font-semibold text-lg">No Traffic Requirements</h4>
-                        <p className="text-purple-200">Start earning regardless of your current traffic levels. Every user interaction counts.</p>
+                        <h4 className="text-white font-semibold text-lg">We Accept (almost) All Websites</h4>
+                        <p className="text-purple-200">Traditional ad networks have many restrictions when it comes to accepting websites. Minimum traffic requirements (including whether traffic is coming from Tier-1 countries), niche preferences, original content requirements - the list goes on. Whether you're a high traffic website, a recently launched saas product, or just a kitchen blog, we can help you all.</p>
                       </div>
                     </div>
                     
@@ -287,8 +320,8 @@ export default function GoodAdsLandingPage() {
                         <span className="text-gray-900 font-bold text-sm">2</span>
                       </div>
                       <div>
-                        <h4 className="text-white font-semibold text-lg">Simple Integration</h4>
-                        <p className="text-purple-200">One plugin, one setup. No complex configurations or technical expertise required.</p>
+                        <h4 className="text-white font-semibold text-lg">Simple And Safe</h4>
+                        <p className="text-purple-200">No complex configurations or technical expertise required. One plugin. one setup. Zero worries.</p>
                       </div>
                     </div>
                   </div>
@@ -299,8 +332,8 @@ export default function GoodAdsLandingPage() {
                         <span className="text-gray-900 font-bold text-sm">3</span>
                       </div>
                       <div>
-                        <h4 className="text-white font-semibold text-lg">Enhanced User Experience</h4>
-                        <p className="text-purple-200">Users actually appreciate your ads because they choose what they want to see.</p>
+                        <h4 className="text-white font-semibold text-lg">Higher Revenue Potential</h4>
+                        <p className="text-purple-200">Intent-driven ads convert better, and companies pay more to collect user submitted insights. This lets us offer significantly (like, really significantly) higher CPMs than traditional ad networks.</p>
                       </div>
                     </div>
                     
@@ -309,8 +342,8 @@ export default function GoodAdsLandingPage() {
                         <span className="text-gray-900 font-bold text-sm">4</span>
                       </div>
                       <div>
-                        <h4 className="text-white font-semibold text-lg">Higher Revenue Potential</h4>
-                        <p className="text-purple-200">Intent-driven ads convert better, meaning higher earnings per interaction.</p>
+                        <h4 className="text-white font-semibold text-lg">Your Users Deserve a Better Ad Experience</h4>
+                        <p className="text-purple-200">Traditional ads are unimpactful for businesses, and annoying and distracting for users. By letting users choose their ad, we offer businesses a more valuable ad experience, and users a better uninterrupted experience after watching the ad.</p>
                       </div>
                     </div>
                   </div>
@@ -336,8 +369,8 @@ export default function GoodAdsLandingPage() {
                         <span className="text-gray-900 font-bold text-sm">1</span>
                       </div>
                       <div>
-                        <h4 className="text-white font-semibold text-lg">Choose Your Ads</h4>
-                        <p className="text-purple-200">Pick from relevant ads that actually interest you, not random banners that clutter your experience.</p>
+                        <h4 className="text-white font-semibold text-lg">Privacy First</h4>
+                        <p className="text-purple-200">This foundational idea this company was born out of was exactly this - wanting ads that respect our privacy. No user data is tracked, collected or bought apart from whatever the user provides intentionally.</p>
                       </div>
                     </div>
                     
@@ -346,8 +379,8 @@ export default function GoodAdsLandingPage() {
                         <span className="text-gray-900 font-bold text-sm">2</span>
                       </div>
                       <div>
-                        <h4 className="text-white font-semibold text-lg">One-Time Per Session</h4>
-                        <p className="text-purple-200">See one ad of your choice per browsing session, then enjoy an ad-free experience.</p>
+                        <h4 className="text-white font-semibold text-lg">Choose Your Ads</h4>
+                        <p className="text-purple-200">Since we don't buy your data, we technically don't know what to recommend you. This allows you to choose whatever ad you want to watch.</p>
                       </div>
                     </div>
                   </div>
@@ -358,8 +391,8 @@ export default function GoodAdsLandingPage() {
                         <span className="text-gray-900 font-bold text-sm">3</span>
                       </div>
                       <div>
-                        <h4 className="text-white font-semibold text-lg">No Tracking</h4>
-                        <p className="text-purple-200">Your privacy is protected. No cookies, no tracking, no creepy following across the web.</p>
+                        <h4 className="text-white font-semibold text-lg">A Better Ad Experience</h4>
+                        <p className="text-purple-200">User problems with ads include privacy concerns, length, repetition, and distracting/worse UX for websites with banner ads. <a href="https://eprints.whiterose.ac.uk/id/eprint/187586/1/IntR_YouTubeAds_PURE.pdf" className="text-yellow-400 hover:text-yellow-300 underline">Research shows</a> these issues. We try to fix that.</p>
                       </div>
                     </div>
                     
@@ -380,7 +413,7 @@ export default function GoodAdsLandingPage() {
         </div>
       </section>
 
-      <section id="how-it-works" className="py-20 px-4 sm:px-6 lg:px-8">
+      {/* <section id="how-it-works" className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
@@ -468,7 +501,28 @@ export default function GoodAdsLandingPage() {
             </Card>
           </div>
         </div>
+      </section> */}
+
+      {/* Stats Section */}
+      <section className="py-16 bg-white border-y border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="text-center">
+              <div className="text-4xl font-bold text-blue-600 mb-2">95%</div>
+              <div className="text-gray-600">Of my friends support this (one didnt understand)</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl font-bold text-purple-600 mb-2">3x</div>
+              <div className="text-gray-600">Higher Conversion (possible)</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl font-bold text-green-600 mb-2">100%</div>
+              <div className="text-gray-600">Privacy Compliant (true)</div>
+            </div>
+          </div>
+        </div>
       </section>
+
 
       {/* Demo Video */}
       <section id="demo" className="py-20 bg-gradient-to-r from-gray-50 to-blue-50">
