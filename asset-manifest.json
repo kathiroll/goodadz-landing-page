@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/goodadz-landing-page/static/css/main.f134ae42.css",
+    "main.js": "/goodadz-landing-page/static/js/main.c13e2752.js",
+    "index.html": "/goodadz-landing-page/index.html",
+    "main.f134ae42.css.map": "/goodadz-landing-page/static/css/main.f134ae42.css.map",
+    "main.c13e2752.js.map": "/goodadz-landing-page/static/js/main.c13e2752.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f134ae42.css",
+    "static/js/main.c13e2752.js"
+  ]
+}

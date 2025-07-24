@@ -1,0 +1,35 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build output
+dist/
+build/
+
+# Dependency directories
+.cache/
+.next/
+out/
+
+# Local env files
+.env
+.env.local
+.env.*.local
+
+# Editor junk
+.DS_Store
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Log files
+*.log
+
+# Coverage reports
+coverage/
+
+# OS ju
+
