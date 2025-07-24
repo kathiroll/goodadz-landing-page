@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "./components/ui/button";
 import { Card, CardContent } from "./components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
@@ -7,6 +7,91 @@ export default function GoodAdsLandingPage() {
   const [formData, setFormData] = useState({});
   const [activeTab, setActiveTab] = useState("businesses");
   const [waitlistTab, setWaitlistTab] = useState("advertisers");
+  const [status, setStatus] = useState("Initializing...");
+
+  // Widget control functions
+  const showWidget = () => {
+    if (window.GoodAdz && window.GoodAdz.show) {
+      window.GoodAdz.show();
+      updateStatus('Widget shown');
+    } else {
+      updateStatus('Error: Widget not ready yet');
+    }
+  };
+
+  const hideWidget = () => {
+    if (window.GoodAdz && window.GoodAdz.hide) {
+      window.GoodAdz.hide();
+      updateStatus('Widget hidden');
+    } else {
+      updateStatus('Error: Widget not ready yet');
+    }
+  };
+
+  const getStatus = () => {
+    if (window.GoodAdz && window.GoodAdz.getStatus) {
+      const status = window.GoodAdz.getStatus();
+      updateStatus(`Status: ${JSON.stringify(status, null, 2)}`);
+    } else {
+      updateStatus('Error: Widget not ready yet');
+    }
+  };
+
+  const enableAutoShow = () => {
+    if (window.GoodAdz && window.GoodAdz.updateConfig) {
+      window.GoodAdz.updateConfig({
+        autoShow: true,
+        showDelay: 3000
+      });
+      updateStatus('Auto-show enabled (3 seconds)');
+    } else {
+      updateStatus('Error: Widget not ready yet');
+    }
+  };
+
+  const updateStatus = (message) => {
+    setStatus(`${new Date().toLocaleTimeString()}: ${message}`);
+  };
+
+  // Check if widget is loaded
+  const checkWidgetStatus = () => {
+    if (window.GoodAdz && window.GoodAdz.initialized) {
+      updateStatus('Widget loaded and ready to use');
+    } else {
+      updateStatus('Waiting for widget to load...');
+      setTimeout(checkWidgetStatus, 500);
+    }
+  };
+
+  // Configuration for the widget
+  useEffect(() => {
+    window.GoodAdzConfig = {
+      onReady: function() {
+        updateStatus('Widget initialized and ready!');
+      },
+      onClose: function() {
+        updateStatus('Widget closed by user');
+      }
+    };
+
+    // Start checking when component mounts
+    checkWidgetStatus();
+  }, []);
+
+  // Load the widget script
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://forked.co.in/dist/ad-widget.js';
+    script.async = true;
+    document.head.appendChild(script);
+
+    return () => {
+      // Cleanup script when component unmounts
+      if (document.head.contains(script)) {
+        document.head.removeChild(script);
+      }
+    };
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
@@ -548,6 +633,45 @@ export default function GoodAdsLandingPage() {
                   <p className="text-white font-semibold text-lg">Demo Video Coming Soon</p>
                 </div>
               </div>
+              
+              {/* Widget Control Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
+                <Button 
+                  onClick={showWidget}
+                  size="lg" 
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                >
+                  <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
+                  </svg>
+                  Show Ad Widget
+                </Button>
+                <Button 
+                  onClick={hideWidget}
+                  variant="outline"
+                  size="lg" 
+                  className="border-2 border-gray-300 hover:border-blue-600 px-8 py-4 text-lg font-semibold transition-all duration-300"
+                >
+                  Hide Widget
+                </Button>
+                <Button 
+                  onClick={enableAutoShow}
+                  variant="outline"
+                  size="lg" 
+                  className="border-2 border-gray-300 hover:border-green-600 px-8 py-4 text-lg font-semibold transition-all duration-300"
+                >
+                  Enable Auto-Show
+                </Button>
+              </div>
+              
+              {/* Status Display */}
+              <div className="bg-white rounded-lg p-4 shadow-md mb-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Widget Status:</h3>
+                <p className="text-sm text-gray-600 font-mono bg-gray-100 p-2 rounded">
+                  {status}
+                </p>
+              </div>
+              
               <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
                 Get This on My Site
               </Button>
