@@ -1,10 +1,17 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import GoodAdsLandingPage from './GoodAdsLandingPage';
+import AdminPage from './components/AdminPage';
 
 function App() {
   return (
-    <div className="App">
-      <GoodAdsLandingPage />
-    </div>
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route path="/" element={<GoodAdsLandingPage />} />
+          <Route path="/admin" element={<AdminPage />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

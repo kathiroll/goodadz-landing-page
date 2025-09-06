@@ -2,6 +2,163 @@ import { useState, useEffect } from "react";
 import { Button } from "./components/ui/button";
 import { Card, CardContent } from "./components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
+import { useForm, ValidationError } from '@formspree/react';
+
+function ContactForm() {
+  const [state, handleSubmit] = useForm("mwpqonrw");
+  
+  if (state.succeeded) {
+    return (
+      <div className="max-w-2xl mx-auto">
+        <Card className="border-0 shadow-xl bg-gradient-to-r from-green-50 to-blue-50">
+          <CardContent className="p-8 text-center">
+            <div className="w-16 h-16 bg-gradient-to-r from-green-400 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 mb-2">Thanks!</h3>
+            <p className="text-gray-600">We'll be in touch soon.</p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+  
+  return (
+    <div className="max-w-2xl mx-auto">
+      <Card className="border-0 shadow-xl bg-gradient-to-br from-white to-blue-50">
+        <CardContent className="p-8">
+          <div className="text-center mb-8">
+            <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 mb-2">Join the Waitlist</h3>
+            <p className="text-gray-600">Be among the first to experience the future of ethical advertising</p>
+          </div>
+          
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                  Name *
+                </label>
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/80 backdrop-blur-sm"
+                  placeholder="Enter your full name"
+                />
+                <ValidationError 
+                  prefix="Name" 
+                  field="name"
+                  errors={state.errors}
+                  className="text-red-500 text-sm"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                  Email Address *
+                </label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/80 backdrop-blur-sm"
+                  placeholder="Enter your email address"
+                />
+                <ValidationError 
+                  prefix="Email" 
+                  field="email"
+                  errors={state.errors}
+                  className="text-red-500 text-sm"
+                />
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <label htmlFor="type" className="block text-sm font-medium text-gray-700">
+                I am a... *
+              </label>
+              <select
+                id="type"
+                name="type"
+                required
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/80 backdrop-blur-sm"
+              >
+                <option value="">Select your role</option>
+                <option value="advertiser">Business owner - I want to run ads</option>
+                <option value="website">Website Owner - I want to monetize my site</option>
+                <option value="investor">Investor - I wanna give you money :))</option>
+                <option value="human">Human - I just wanna talk</option>
+              </select>
+              <ValidationError 
+                prefix="Type" 
+                field="type"
+                errors={state.errors}
+                className="text-red-500 text-sm"
+              />
+            </div>
+            
+            {/* <div className="space-y-2">
+              <label htmlFor="message" className="block text-sm font-medium text-gray-700">
+                Additional Details (Optional)
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                rows={4}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/80 backdrop-blur-sm resize-none"
+                placeholder="Tell us about your business, website, or what you're looking to achieve..."
+              />
+              <ValidationError 
+                prefix="Message" 
+                field="message"
+                errors={state.errors}
+                className="text-red-500 text-sm"
+              />
+            </div> */}
+            
+            <Button 
+              type="submit" 
+              disabled={state.submitting}
+              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+            >
+              {state.submitting ? (
+                <div className="flex items-center justify-center">
+                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Submitting...
+                </div>
+              ) : (
+                <div className="flex items-center justify-center">
+                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                  </svg>
+                  Join the Waitlist
+                </div>
+              )}
+            </Button>
+          </form>
+          
+          <div className="mt-6 text-center">
+            <p className="text-sm text-gray-500">
+              We respect your privacy. And dont worry, we hate spam too.
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
 
 export default function GoodAdsLandingPage() {
   const [formData, setFormData] = useState({});
@@ -179,15 +336,24 @@ export default function GoodAdsLandingPage() {
             
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <a href="#demo">
               <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
                 <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
                 </svg>
                 Watch Demo
               </Button>
-              <Button variant="outline" size="lg" className="border-2 border-gray-300 hover:border-blue-600 px-8 py-4 text-lg font-semibold transition-all duration-300">
-                Get Early Access
-              </Button>
+              </a>
+              <a href="#waitlist">
+                <Button
+                  as="span"
+                  variant="outline"
+                  size="lg"
+                  className="border-2 border-gray-300 hover:border-blue-600 px-8 py-4 text-lg font-semibold transition-all duration-300"
+                >
+                  Join the Waitlist
+                </Button>
+              </a>
             </div>
           </div>
         </div>
@@ -195,7 +361,7 @@ export default function GoodAdsLandingPage() {
 
 
       {/* Why We're Good For You Section */}
-      <section className="py-20 bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 relative overflow-hidden mx-4 sm:mx-6 lg:mx-8 my-20 rounded-3xl">
+      <section section id="how-it-works" className="py-20 bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 relative overflow-hidden mx-4 sm:mx-6 lg:mx-8 my-20 rounded-3xl">
         {/* Background decorative elements */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-10 left-10 w-32 h-32 bg-white rounded-full blur-3xl"></div>
@@ -646,6 +812,7 @@ export default function GoodAdsLandingPage() {
                   </svg>
                   Show Ad Widget
                 </Button>
+                {/*
                 <Button 
                   onClick={hideWidget}
                   variant="outline"
@@ -662,19 +829,21 @@ export default function GoodAdsLandingPage() {
                 >
                   Enable Auto-Show
                 </Button>
+                */}
               </div>
               
-              {/* Status Display */}
+              {/* 
               <div className="bg-white rounded-lg p-4 shadow-md mb-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">Widget Status:</h3>
                 <p className="text-sm text-gray-600 font-mono bg-gray-100 p-2 rounded">
                   {status}
                 </p>
               </div>
+              */}
               
-              <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+              {/* <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
                 Get This on My Site
-              </Button>
+              </Button> */}
             </div>
           </div>
         </div>
@@ -683,16 +852,16 @@ export default function GoodAdsLandingPage() {
       {/* Lead Capture */}
       <section id="waitlist" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
+          {/* <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
               Join the Waitlist
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               Be among the first to experience the future of ethical advertising
             </p>
-          </div>
+          </div> */}
           
-          <div className="max-w-2xl mx-auto">
+          {/* <div className="max-w-2xl mx-auto">
             <Card className="border-0 shadow-xl">
               <CardContent className="p-8">
                 <Tabs value={waitlistTab} onValueChange={setWaitlistTab} className="w-full">
@@ -771,12 +940,13 @@ export default function GoodAdsLandingPage() {
                 </Tabs>
               </CardContent>
             </Card>
-          </div>
+          </div> */}
+          <ContactForm />
         </div>
       </section>
 
       {/* Final CTA */}
-      <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-600">
+      {/* <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-600">
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <h3 className="text-3xl md:text-4xl font-bold text-white mb-6">
             Ready to Be Part of a Better Ad Future?
@@ -788,7 +958,7 @@ export default function GoodAdsLandingPage() {
             Get Early Access Now
           </Button>
         </div>
-      </section>
+      </section> */}
 
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-12">
