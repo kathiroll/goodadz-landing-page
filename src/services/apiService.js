@@ -1,14 +1,13 @@
 const API_BASE_URL = 'https://goodads.onrender.com';
 
 
-// Environment variables - hardcoded for now to avoid process issues
-// In production, these would be injected at build time
+// Environment variables with fallbacks
 const ENV = {
-  ADMIN_USERNAME: 'admin',
-  ADMIN_PASSWORD: 'goodads2024',
-  ADMIN_SECRET_KEY: 'peepee123-goodadz-admin-secret-2024',
-  JWT_SECRET: 'peepee123-goodadz-jwt-secret-2024',
-  API_KEY: 'ak_04bd1da90570cdff9fd3787231cd231e'
+  ADMIN_USERNAME: process.env.REACT_APP_ADMIN_USERNAME || 'admin',
+  ADMIN_PASSWORD: process.env.REACT_APP_ADMIN_PASSWORD || 'goodads2024',
+  ADMIN_SECRET_KEY: process.env.REACT_APP_ADMIN_SECRET_KEY || 'peepee123-goodadz-admin-secret-2024',
+  JWT_SECRET: process.env.REACT_APP_JWT_SECRET || 'peepee123-goodadz-jwt-secret-2024',
+  API_KEY: process.env.REACT_APP_API_KEY || 'ak_04bd1da90570cdff9fd3787231cd231e'
 };
 
 // Admin credentials
@@ -23,12 +22,13 @@ const JWT_SECRET = ENV.JWT_SECRET;
 
 // Debug logging for environment variables
 console.log('🔍 ENVIRONMENT VARIABLES DEBUG:');
-console.log('- ADMIN_USERNAME:', ENV.ADMIN_USERNAME);
-console.log('- ADMIN_PASSWORD:', ENV.ADMIN_PASSWORD ? '***SET***' : 'NOT SET');
-console.log('- ADMIN_SECRET_KEY:', ENV.ADMIN_SECRET_KEY ? '***SET***' : 'NOT SET');
-console.log('- JWT_SECRET:', ENV.JWT_SECRET ? '***SET***' : 'NOT SET');
+console.log('- ADMIN_USERNAME:', ENV.ADMIN_USERNAME, process.env.REACT_APP_ADMIN_USERNAME ? '(from env)' : '(fallback)');
+console.log('- ADMIN_PASSWORD:', ENV.ADMIN_PASSWORD ? '***SET***' : 'NOT SET', process.env.REACT_APP_ADMIN_PASSWORD ? '(from env)' : '(fallback)');
+console.log('- ADMIN_SECRET_KEY:', ENV.ADMIN_SECRET_KEY ? '***SET***' : 'NOT SET', process.env.REACT_APP_ADMIN_SECRET_KEY ? '(from env)' : '(fallback)');
+console.log('- JWT_SECRET:', ENV.JWT_SECRET ? '***SET***' : 'NOT SET', process.env.REACT_APP_JWT_SECRET ? '(from env)' : '(fallback)');
+console.log('- API_KEY:', ENV.API_KEY ? '***SET***' : 'NOT SET', process.env.REACT_APP_API_KEY ? '(from env)' : '(fallback)');
 console.log('- process available:', typeof process !== 'undefined');
-console.log('- window.__ENV__ available:', typeof window !== 'undefined' && !!window.__ENV__);
+console.log('- process.env available:', typeof process !== 'undefined' && !!process.env);
 
 class ApiService {
   constructor() {
@@ -170,14 +170,33 @@ class ApiService {
     return this.makeRequest('/api/admin/overview');
   }
 
-  async getFormSubmissions(adId, page = 1, limit = 50) {
-    console.log(`📝 Getting form submissions for ad ${adId} (page: ${page}, limit: ${limit})...`);
-    return this.makeRequest(`/api/admin/forms/${adId}?page=${page}&limit=${limit}`);
+  async getFormSubmissions(adId, page = 1, limit = 50, apiKey = null) {
+    console.log(`📝 Getting form submissions for ad ${adId} (page: ${page}, limit: ${limit}, apiKey: ${apiKey})...`);
+    const params = new URLSearchParams({
+      page: page.toString(),
+      limit: limit.toString()
+    });
+    
+    if (apiKey) {
+      params.append('apiKey', apiKey);
+    }
+    
+    return this.makeRequest(`/api/admin/forms/${adId}?${params.toString()}`);
   }
 
   async getAdAnalytics(adId) {
     console.log(`📈 Getting analytics for ad ${adId}...`);
     return this.makeRequest(`/api/admin/analytics/${adId}`);
+  }
+
+  async getAllApiKeys(page = 1, limit = 50) {
+    console.log(`🔑 Getting all API keys (page: ${page}, limit: ${limit})...`);
+    return this.makeRequest(`/api/admin/api-keys?page=${page}&limit=${limit}`);
+  }
+
+  async getApiKeyDetails(apiKey) {
+    console.log(`🔍 Getting details for API key ${apiKey}...`);
+    return this.makeRequest(`/api/admin/api-keys/${apiKey}`);
   }
 }
 

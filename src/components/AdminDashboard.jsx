@@ -6,6 +6,7 @@ import OverviewCards from './admin/OverviewCards';
 import ConversionFunnel from './admin/ConversionFunnel';
 import AdPerformance from './admin/AdPerformance';
 import SubmissionsTable from './admin/SubmissionsTable';
+import APIKeysManagement from './admin/APIKeysManagement';
 import apiService from '../services/apiService';
 
 const AdminDashboard = ({ onLogout }) => {
@@ -260,11 +261,12 @@ const AdminDashboard = ({ onLogout }) => {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 lg:w-auto lg:grid-cols-none lg:inline-flex">
+          <TabsList className="grid w-full grid-cols-5 lg:w-auto lg:grid-cols-none lg:inline-flex">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="funnel">Conversion Funnel</TabsTrigger>
             <TabsTrigger value="performance">Ad Performance</TabsTrigger>
             <TabsTrigger value="submissions">Submissions</TabsTrigger>
+            <TabsTrigger value="api-keys">API Keys</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
@@ -313,6 +315,13 @@ const AdminDashboard = ({ onLogout }) => {
               )}
             </div>
             <SubmissionsTable ads={ads} />
+          </TabsContent>
+
+          <TabsContent value="api-keys" className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-gray-900">API Keys Management</h2>
+            </div>
+            <APIKeysManagement />
           </TabsContent>
         </Tabs>
       </div>

@@ -13,6 +13,7 @@ const SubmissionsTable = ({ ads }) => {
   });
 
   const [selectedAdId, setSelectedAdId] = useState('');
+  const [selectedApiKey, setSelectedApiKey] = useState('');
   const [submissions, setSubmissions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -23,6 +24,7 @@ const SubmissionsTable = ({ ads }) => {
     totalPages: 0
   });
   const [searchTerm, setSearchTerm] = useState('');
+  const [apiKeys, setApiKeys] = useState([]);
 
   useEffect(() => {
     if (ads && ads.length > 0 && !selectedAdId) {
@@ -34,7 +36,12 @@ const SubmissionsTable = ({ ads }) => {
     if (selectedAdId) {
       loadSubmissions();
     }
-  }, [selectedAdId, pagination.page]);
+  }, [selectedAdId, selectedApiKey, pagination.page]);
+
+  useEffect(() => {
+    // Load available API keys for filtering
+    loadApiKeys();
+  }, []);
 
   const loadSubmissions = async () => {
     if (!selectedAdId) {
@@ -53,7 +60,7 @@ const SubmissionsTable = ({ ads }) => {
       setError('');
       
       console.log('📝 SUBMISSIONS TABLE: Making API call...');
-      const response = await apiService.getFormSubmissions(selectedAdId, pagination.page, pagination.limit);
+      const response = await apiService.getFormSubmissions(selectedAdId, pagination.page, pagination.limit, selectedApiKey || null);
       
       console.log('📝 SUBMISSIONS TABLE: API response received:', {
         dataType: typeof response,
@@ -98,7 +105,7 @@ const SubmissionsTable = ({ ads }) => {
 
       // Validate submissions structure based on your API format
       if (submissionsArray.length > 0) {
-        const expectedSubmissionFields = ['adId', 'sessionId', 'formData', 'submittedAt'];
+        const expectedSubmissionFields = ['adId', 'sessionId', 'formData', 'submittedAt', 'apiKey'];
         submissionsArray.forEach((submission, index) => {
           const missingSubmissionFields = expectedSubmissionFields.filter(field => !(field in submission));
           if (missingSubmissionFields.length > 0) {
@@ -109,6 +116,7 @@ const SubmissionsTable = ({ ads }) => {
             sessionId: submission.sessionId,
             formData: submission.formData,
             submittedAt: submission.submittedAt,
+            apiKey: submission.apiKey,
             allFields: Object.keys(submission)
           });
         });
@@ -152,6 +160,21 @@ const SubmissionsTable = ({ ads }) => {
     }
   };
 
+  const loadApiKeys = async () => {
+    try {
+      console.log('🔑 Loading API keys for filtering...');
+      const response = await apiService.getAllApiKeys(1, 1000); // Get all API keys
+      
+      if (response.success && response.data) {
+        setApiKeys(response.data);
+        console.log('✅ API keys loaded for filtering:', response.data.length);
+      }
+    } catch (err) {
+      console.error('❌ Failed to load API keys for filtering:', err);
+      // Don't show error to user for this optional feature
+    }
+  };
+
   const handlePageChange = (newPage) => {
     setPagination(prev => ({ ...prev, page: newPage }));
   };
@@ -167,7 +190,7 @@ const SubmissionsTable = ({ ads }) => {
       }
     });
 
-    const headers = ['Date', 'Ad ID', 'Session ID', ...Array.from(allKeys)];
+    const headers = ['Date', 'Ad ID', 'Session ID', 'API Key', ...Array.from(allKeys)];
     
     const csvContent = [
       headers.join(','),
@@ -176,6 +199,7 @@ const SubmissionsTable = ({ ads }) => {
           new Date(submission.submittedAt || submission.createdAt || submission.date).toLocaleDateString(),
           submission.adId || 'N/A',
           submission.sessionId || 'N/A',
+          submission.apiKey || 'N/A',
           ...Array.from(allKeys).map(key => {
             const value = submission.formData?.[key] || '';
             // Escape commas and quotes for CSV
@@ -190,7 +214,8 @@ const SubmissionsTable = ({ ads }) => {
     const link = document.createElement('a');
     const url = URL.createObjectURL(blob);
     link.setAttribute('href', url);
-    link.setAttribute('download', `submissions_${selectedAdId}_${new Date().toISOString().split('T')[0]}.csv`);
+    const filename = `submissions_${selectedAdId}${selectedApiKey ? `_${selectedApiKey.substring(0, 8)}` : ''}_${new Date().toISOString().split('T')[0]}.csv`;
+    link.setAttribute('download', filename);
     link.style.visibility = 'hidden';
     document.body.appendChild(link);
     link.click();
@@ -203,6 +228,7 @@ const SubmissionsTable = ({ ads }) => {
     return (
       submission.adId?.toLowerCase().includes(searchLower) ||
       submission.sessionId?.toLowerCase().includes(searchLower) ||
+      submission.apiKey?.toLowerCase().includes(searchLower) ||
       JSON.stringify(submission.formData || {}).toLowerCase().includes(searchLower)
     );
   });
@@ -242,12 +268,28 @@ const SubmissionsTable = ({ ads }) => {
               </div>
               
               <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Filter by API Key</label>
+                <select
+                  value={selectedApiKey}
+                  onChange={(e) => setSelectedApiKey(e.target.value)}
+                  className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="">All API Keys</option>
+                  {apiKeys.map(apiKey => (
+                    <option key={apiKey.apiKey} value={apiKey.apiKey}>
+                      {apiKey.email ? `${apiKey.email} (${apiKey.apiKey.substring(0, 8)}...)` : `${apiKey.apiKey.substring(0, 8)}...`}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              
+              <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Search</label>
                 <input
                   type="text"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="Search by Ad ID, Session ID, or form data..."
+                  placeholder="Search by Ad ID, Session ID, API Key, or form data..."
                   className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
@@ -319,6 +361,9 @@ const SubmissionsTable = ({ ads }) => {
                         Session ID
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        API Key
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Form Data
                       </th>
                     </tr>
@@ -334,6 +379,25 @@ const SubmissionsTable = ({ ads }) => {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                           {submission.sessionId || 'N/A'}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          {submission.apiKey ? (
+                            <div>
+                              <div className="font-mono text-xs">
+                                {submission.apiKey.substring(0, 8)}...{submission.apiKey.substring(submission.apiKey.length - 4)}
+                              </div>
+                              {(() => {
+                                const apiKeyData = apiKeys.find(ak => ak.apiKey === submission.apiKey);
+                                return apiKeyData?.email && (
+                                  <div className="text-xs text-gray-400 mt-1">
+                                    {apiKeyData.email}
+                                  </div>
+                                );
+                              })()}
+                            </div>
+                          ) : (
+                            'N/A'
+                          )}
                         </td>
                         <td className="px-6 py-4 text-sm text-gray-900">
                           {submission.formData ? (
