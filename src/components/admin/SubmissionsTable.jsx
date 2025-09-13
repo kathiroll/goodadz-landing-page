@@ -60,7 +60,9 @@ const SubmissionsTable = ({ ads }) => {
       setError('');
       
       console.log('📝 SUBMISSIONS TABLE: Making API call...');
-      const response = await apiService.getFormSubmissions(selectedAdId, pagination.page, pagination.limit, selectedApiKey || null);
+      // Don't send selectedApiKey to backend since it doesn't understand nested structure
+      // We'll do client-side filtering instead
+      const response = await apiService.getFormSubmissions(selectedAdId, pagination.page, pagination.limit, null);
       
       console.log('📝 SUBMISSIONS TABLE: API response received:', {
         dataType: typeof response,
@@ -105,19 +107,27 @@ const SubmissionsTable = ({ ads }) => {
 
       // Validate submissions structure based on your API format
       if (submissionsArray.length > 0) {
-        const expectedSubmissionFields = ['adId', 'sessionId', 'formData', 'submittedAt', 'apiKey'];
+        const expectedSubmissionFields = ['adId', 'sessionId', 'formData', 'submittedAt'];
         submissionsArray.forEach((submission, index) => {
           const missingSubmissionFields = expectedSubmissionFields.filter(field => !(field in submission));
           if (missingSubmissionFields.length > 0) {
             console.warn(`📝 SUBMISSIONS TABLE: Submission at index ${index} missing expected fields:`, missingSubmissionFields);
           }
+          
+          // Log detailed structure including nested apiKeyInfo
+          const apiKeyInfo = submission.formData?.apiKeyInfo;
           console.log(`📝 SUBMISSIONS TABLE: Submission ${index} structure:`, {
             adId: submission.adId,
             sessionId: submission.sessionId,
             formData: submission.formData,
             submittedAt: submission.submittedAt,
-            apiKey: submission.apiKey,
-            allFields: Object.keys(submission)
+            apiKeyInfo: apiKeyInfo,
+            hasApiKeyInfo: !!apiKeyInfo,
+            apiKeyFromInfo: apiKeyInfo?.apiKey,
+            emailFromInfo: apiKeyInfo?.email,
+            websiteFromInfo: apiKeyInfo?.websiteUrl,
+            allFields: Object.keys(submission),
+            formDataKeys: submission.formData ? Object.keys(submission.formData) : null
           });
         });
       }
@@ -168,6 +178,8 @@ const SubmissionsTable = ({ ads }) => {
       if (response.success && response.data) {
         setApiKeys(response.data);
         console.log('✅ API keys loaded for filtering:', response.data.length);
+      } else {
+        console.log('📝 FAILED TO LOAD API KEYS FOR FILTERING: SUBMISSIONS TABLE: API keys response data:', response.data);
       }
     } catch (err) {
       console.error('❌ Failed to load API keys for filtering:', err);
@@ -179,8 +191,25 @@ const SubmissionsTable = ({ ads }) => {
   const getUniqueApiKeysFromSubmissions = () => {
     const uniqueApiKeys = new Map();
     
-    submissions.forEach(submission => {
+    console.log('🔍 EXTRACTING API KEYS FROM SUBMISSIONS:', {
+      totalSubmissions: submissions.length,
+      firstSubmissionStructure: submissions.length > 0 ? {
+        hasFormData: !!submissions[0].formData,
+        formDataKeys: submissions[0].formData ? Object.keys(submissions[0].formData) : null,
+        hasApiKeyInfo: !!submissions[0].formData?.apiKeyInfo,
+        apiKeyInfo: submissions[0].formData?.apiKeyInfo
+      } : null
+    });
+    
+    submissions.forEach((submission, index) => {
       const apiKeyInfo = submission.formData?.apiKeyInfo;
+      console.log(`🔍 Submission ${index} API key extraction:`, {
+        hasFormData: !!submission.formData,
+        hasApiKeyInfo: !!apiKeyInfo,
+        apiKeyInfo: apiKeyInfo,
+        extractedApiKey: apiKeyInfo?.apiKey
+      });
+      
       if (apiKeyInfo?.apiKey) {
         uniqueApiKeys.set(apiKeyInfo.apiKey, {
           apiKey: apiKeyInfo.apiKey,
@@ -190,7 +219,9 @@ const SubmissionsTable = ({ ads }) => {
       }
     });
     
-    return Array.from(uniqueApiKeys.values());
+    const result = Array.from(uniqueApiKeys.values());
+    console.log('🔍 EXTRACTED UNIQUE API KEYS:', result);
+    return result;
   };
 
   const handlePageChange = (newPage) => {
@@ -351,6 +382,17 @@ const SubmissionsTable = ({ ads }) => {
                 {loading ? 'Loading...' : 'Refresh'}
               </Button>
               <Button 
+                onClick={() => {
+                  console.log('🔍 MANUAL DEBUG - Current submissions structure:', submissions);
+                  console.log('🔍 MANUAL DEBUG - Extracted API keys:', getUniqueApiKeysFromSubmissions());
+                  console.log('🔍 MANUAL DEBUG - Filtered submissions:', filteredSubmissions);
+                }} 
+                variant="outline"
+                size="sm"
+              >
+                Debug Data
+              </Button>
+              <Button 
                 onClick={exportToCSV} 
                 disabled={!filteredSubmissions.length}
                 variant="outline"
@@ -434,6 +476,14 @@ const SubmissionsTable = ({ ads }) => {
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                           {(() => {
                             const apiKeyInfo = submission.formData?.apiKeyInfo;
+                            console.log('🎨 RENDERING API KEY for submission:', {
+                              hasFormData: !!submission.formData,
+                              formDataKeys: submission.formData ? Object.keys(submission.formData) : null,
+                              hasApiKeyInfo: !!apiKeyInfo,
+                              apiKeyInfo: apiKeyInfo,
+                              willRenderApiKey: !!apiKeyInfo?.apiKey
+                            });
+                            
                             if (apiKeyInfo?.apiKey) {
                               return (
                                 <div>
@@ -455,6 +505,7 @@ const SubmissionsTable = ({ ads }) => {
                                 </div>
                               );
                             }
+                            console.log('🎨 RENDERING N/A for API key');
                             return 'N/A';
                           })()}
                         </td>
