@@ -114,8 +114,8 @@ const SubmissionsTable = ({ ads }) => {
             console.warn(`📝 SUBMISSIONS TABLE: Submission at index ${index} missing expected fields:`, missingSubmissionFields);
           }
           
-          // Log detailed structure including nested apiKeyInfo
-          const apiKeyInfo = submission.formData?.apiKeyInfo;
+          // Log detailed structure including top-level apiKeyInfo
+          const apiKeyInfo = submission.apiKeyInfo;
           console.log(`📝 SUBMISSIONS TABLE: Submission ${index} structure:`, {
             adId: submission.adId,
             sessionId: submission.sessionId,
@@ -196,13 +196,13 @@ const SubmissionsTable = ({ ads }) => {
       firstSubmissionStructure: submissions.length > 0 ? {
         hasFormData: !!submissions[0].formData,
         formDataKeys: submissions[0].formData ? Object.keys(submissions[0].formData) : null,
-        hasApiKeyInfo: !!submissions[0].formData?.apiKeyInfo,
-        apiKeyInfo: submissions[0].formData?.apiKeyInfo
+        hasApiKeyInfo: !!submissions[0].apiKeyInfo,
+        apiKeyInfo: submissions[0].apiKeyInfo
       } : null
     });
     
     submissions.forEach((submission, index) => {
-      const apiKeyInfo = submission.formData?.apiKeyInfo;
+      const apiKeyInfo = submission.apiKeyInfo; // apiKeyInfo is at top level, not in formData
       console.log(`🔍 Submission ${index} API key extraction:`, {
         hasFormData: !!submission.formData,
         hasApiKeyInfo: !!apiKeyInfo,
@@ -244,7 +244,7 @@ const SubmissionsTable = ({ ads }) => {
     const csvContent = [
       headers.join(','),
       ...filteredSubmissions.map(submission => {
-        const apiKeyInfo = submission.formData?.apiKeyInfo;
+        const apiKeyInfo = submission.apiKeyInfo; // apiKeyInfo is at top level
         const row = [
           new Date(submission.submittedAt || submission.createdAt || submission.date).toLocaleDateString(),
           submission.adId || 'N/A',
@@ -253,7 +253,6 @@ const SubmissionsTable = ({ ads }) => {
           apiKeyInfo?.email || 'N/A',
           apiKeyInfo?.websiteUrl || 'N/A',
           ...Array.from(allKeys).map(key => {
-            if (key === 'apiKeyInfo') return ''; // Skip apiKeyInfo as it's handled separately
             const value = submission.formData?.[key] || '';
             // Escape commas and quotes for CSV
             return `"${String(value).replace(/"/g, '""')}"`;
@@ -276,7 +275,7 @@ const SubmissionsTable = ({ ads }) => {
   };
 
   const filteredSubmissions = submissions.filter(submission => {
-    const apiKeyInfo = submission.formData?.apiKeyInfo;
+    const apiKeyInfo = submission.apiKeyInfo; // apiKeyInfo is at top level
     
     // Filter by selected API key first
     if (selectedApiKey && apiKeyInfo?.apiKey !== selectedApiKey) {
@@ -475,7 +474,7 @@ const SubmissionsTable = ({ ads }) => {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                           {(() => {
-                            const apiKeyInfo = submission.formData?.apiKeyInfo;
+                            const apiKeyInfo = submission.apiKeyInfo; // apiKeyInfo is at top level
                             console.log('🎨 RENDERING API KEY for submission:', {
                               hasFormData: !!submission.formData,
                               formDataKeys: submission.formData ? Object.keys(submission.formData) : null,
@@ -512,14 +511,12 @@ const SubmissionsTable = ({ ads }) => {
                         <td className="px-6 py-4 text-sm text-gray-900">
                           {submission.formData ? (
                             <div className="space-y-1">
-                              {Object.entries(submission.formData)
-                                .filter(([key]) => key !== 'apiKeyInfo') // Exclude apiKeyInfo as it's shown in separate column
-                                .map(([key, value]) => (
-                                  <div key={key} className="flex">
-                                    <span className="font-medium text-gray-600 mr-2">{key}:</span>
-                                    <span className="text-gray-900">{String(value)}</span>
-                                  </div>
-                                ))}
+                              {Object.entries(submission.formData).map(([key, value]) => (
+                                <div key={key} className="flex">
+                                  <span className="font-medium text-gray-600 mr-2">{key}:</span>
+                                  <span className="text-gray-900">{String(value)}</span>
+                                </div>
+                              ))}
                             </div>
                           ) : (
                             <span className="text-gray-500">No data</span>
