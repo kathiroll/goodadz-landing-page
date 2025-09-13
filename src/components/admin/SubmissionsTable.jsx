@@ -175,6 +175,24 @@ const SubmissionsTable = ({ ads }) => {
     }
   };
 
+  // Extract unique API keys from current submissions for filtering
+  const getUniqueApiKeysFromSubmissions = () => {
+    const uniqueApiKeys = new Map();
+    
+    submissions.forEach(submission => {
+      const apiKeyInfo = submission.formData?.apiKeyInfo;
+      if (apiKeyInfo?.apiKey) {
+        uniqueApiKeys.set(apiKeyInfo.apiKey, {
+          apiKey: apiKeyInfo.apiKey,
+          email: apiKeyInfo.email,
+          websiteUrl: apiKeyInfo.websiteUrl
+        });
+      }
+    });
+    
+    return Array.from(uniqueApiKeys.values());
+  };
+
   const handlePageChange = (newPage) => {
     setPagination(prev => ({ ...prev, page: newPage }));
   };
@@ -182,25 +200,29 @@ const SubmissionsTable = ({ ads }) => {
   const exportToCSV = () => {
     if (!submissions.length) return;
 
-    // Get all unique form field keys
+    // Get all unique form field keys from filtered submissions
     const allKeys = new Set();
-    submissions.forEach(submission => {
+    filteredSubmissions.forEach(submission => {
       if (submission.formData) {
         Object.keys(submission.formData).forEach(key => allKeys.add(key));
       }
     });
 
-    const headers = ['Date', 'Ad ID', 'Session ID', 'API Key', ...Array.from(allKeys)];
+    const headers = ['Date', 'Ad ID', 'Session ID', 'API Key', 'Email', 'Website URL', ...Array.from(allKeys)];
     
     const csvContent = [
       headers.join(','),
-      ...submissions.map(submission => {
+      ...filteredSubmissions.map(submission => {
+        const apiKeyInfo = submission.formData?.apiKeyInfo;
         const row = [
           new Date(submission.submittedAt || submission.createdAt || submission.date).toLocaleDateString(),
           submission.adId || 'N/A',
           submission.sessionId || 'N/A',
-          submission.apiKey || 'N/A',
+          apiKeyInfo?.apiKey || 'N/A',
+          apiKeyInfo?.email || 'N/A',
+          apiKeyInfo?.websiteUrl || 'N/A',
           ...Array.from(allKeys).map(key => {
+            if (key === 'apiKeyInfo') return ''; // Skip apiKeyInfo as it's handled separately
             const value = submission.formData?.[key] || '';
             // Escape commas and quotes for CSV
             return `"${String(value).replace(/"/g, '""')}"`;
@@ -223,12 +245,23 @@ const SubmissionsTable = ({ ads }) => {
   };
 
   const filteredSubmissions = submissions.filter(submission => {
+    const apiKeyInfo = submission.formData?.apiKeyInfo;
+    
+    // Filter by selected API key first
+    if (selectedApiKey && apiKeyInfo?.apiKey !== selectedApiKey) {
+      return false;
+    }
+    
+    // Then filter by search term
     if (!searchTerm) return true;
     const searchLower = searchTerm.toLowerCase();
+    
     return (
       submission.adId?.toLowerCase().includes(searchLower) ||
       submission.sessionId?.toLowerCase().includes(searchLower) ||
-      submission.apiKey?.toLowerCase().includes(searchLower) ||
+      apiKeyInfo?.apiKey?.toLowerCase().includes(searchLower) ||
+      apiKeyInfo?.email?.toLowerCase().includes(searchLower) ||
+      apiKeyInfo?.websiteUrl?.toLowerCase().includes(searchLower) ||
       JSON.stringify(submission.formData || {}).toLowerCase().includes(searchLower)
     );
   });
@@ -275,11 +308,29 @@ const SubmissionsTable = ({ ads }) => {
                   className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
                   <option value="">All API Keys</option>
-                  {apiKeys.map(apiKey => (
-                    <option key={apiKey.apiKey} value={apiKey.apiKey}>
-                      {apiKey.email ? `${apiKey.email} (${apiKey.apiKey.substring(0, 8)}...)` : `${apiKey.apiKey.substring(0, 8)}...`}
-                    </option>
-                  ))}
+                  {(() => {
+                    // Combine API keys from both sources and deduplicate
+                    const submissionApiKeys = getUniqueApiKeysFromSubmissions();
+                    const allApiKeys = new Map();
+                    
+                    // Add API keys from submissions first (they have priority)
+                    submissionApiKeys.forEach(apiKey => {
+                      allApiKeys.set(apiKey.apiKey, apiKey);
+                    });
+                    
+                    // Add API keys from API call (if not already present)
+                    apiKeys.forEach(apiKey => {
+                      if (!allApiKeys.has(apiKey.apiKey)) {
+                        allApiKeys.set(apiKey.apiKey, apiKey);
+                      }
+                    });
+                    
+                    return Array.from(allApiKeys.values()).map(apiKey => (
+                      <option key={apiKey.apiKey} value={apiKey.apiKey}>
+                        {apiKey.email ? `${apiKey.email} (${apiKey.apiKey.substring(0, 8)}...)` : `${apiKey.apiKey.substring(0, 8)}...`}
+                      </option>
+                    ));
+                  })()}
                 </select>
               </div>
               
@@ -289,7 +340,7 @@ const SubmissionsTable = ({ ads }) => {
                   type="text"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="Search by Ad ID, Session ID, API Key, or form data..."
+                  placeholder="Search by Ad ID, Session ID, API Key, Email, Website URL, or form data..."
                   className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
@@ -381,33 +432,43 @@ const SubmissionsTable = ({ ads }) => {
                           {submission.sessionId || 'N/A'}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {submission.apiKey ? (
-                            <div>
-                              <div className="font-mono text-xs">
-                                {submission.apiKey.substring(0, 8)}...{submission.apiKey.substring(submission.apiKey.length - 4)}
-                              </div>
-                              {(() => {
-                                const apiKeyData = apiKeys.find(ak => ak.apiKey === submission.apiKey);
-                                return apiKeyData?.email && (
-                                  <div className="text-xs text-gray-400 mt-1">
-                                    {apiKeyData.email}
+                          {(() => {
+                            const apiKeyInfo = submission.formData?.apiKeyInfo;
+                            if (apiKeyInfo?.apiKey) {
+                              return (
+                                <div>
+                                  <div className="font-mono text-xs">
+                                    {apiKeyInfo.apiKey.substring(0, 8)}...{apiKeyInfo.apiKey.substring(apiKeyInfo.apiKey.length - 4)}
                                   </div>
-                                );
-                              })()}
-                            </div>
-                          ) : (
-                            'N/A'
-                          )}
+                                  {apiKeyInfo.email && (
+                                    <div className="text-xs text-gray-600 mt-1">
+                                      {apiKeyInfo.email}
+                                    </div>
+                                  )}
+                                  {apiKeyInfo.websiteUrl && (
+                                    <div className="text-xs text-blue-500 mt-1 truncate max-w-xs">
+                                      <a href={apiKeyInfo.websiteUrl} target="_blank" rel="noopener noreferrer" className="hover:text-blue-700">
+                                        {apiKeyInfo.websiteUrl}
+                                      </a>
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            }
+                            return 'N/A';
+                          })()}
                         </td>
                         <td className="px-6 py-4 text-sm text-gray-900">
                           {submission.formData ? (
                             <div className="space-y-1">
-                              {Object.entries(submission.formData).map(([key, value]) => (
-                                <div key={key} className="flex">
-                                  <span className="font-medium text-gray-600 mr-2">{key}:</span>
-                                  <span className="text-gray-900">{String(value)}</span>
-                                </div>
-                              ))}
+                              {Object.entries(submission.formData)
+                                .filter(([key]) => key !== 'apiKeyInfo') // Exclude apiKeyInfo as it's shown in separate column
+                                .map(([key, value]) => (
+                                  <div key={key} className="flex">
+                                    <span className="font-medium text-gray-600 mr-2">{key}:</span>
+                                    <span className="text-gray-900">{String(value)}</span>
+                                  </div>
+                                ))}
                             </div>
                           ) : (
                             <span className="text-gray-500">No data</span>
