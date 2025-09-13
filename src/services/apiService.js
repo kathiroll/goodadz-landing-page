@@ -5,9 +5,9 @@ const API_BASE_URL = 'https://goodads.onrender.com';
 const ENV = {
   ADMIN_USERNAME: process.env.REACT_APP_ADMIN_USERNAME || 'admin',
   ADMIN_PASSWORD: process.env.REACT_APP_ADMIN_PASSWORD || 'goodads2024',
-  ADMIN_SECRET_KEY: process.env.REACT_APP_ADMIN_SECRET_KEY || 'peepee123-goodadz-admin-secret-2024',
-  JWT_SECRET: process.env.REACT_APP_JWT_SECRET || 'peepee123-goodadz-jwt-secret-2024',
-  API_KEY: process.env.REACT_APP_API_KEY || 'ak_04bd1da90570cdff9fd3787231cd231e'
+  ADMIN_SECRET_KEY: process.env.REACT_APP_ADMIN_SECRET_KEY || 'peepee',
+  JWT_SECRET: process.env.REACT_APP_JWT_SECRET || 'peepee',
+  API_KEY: process.env.REACT_APP_API_KEY || 'ak_1234'
 };
 
 // Admin credentials
